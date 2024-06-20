@@ -10,10 +10,10 @@ router.get("/", function (req, res, next) {
 router.get("/create", async function (req, res, next) {
   const createdCustomer = await customerModel.create({
     username: "Tejas",
-    nickname: "CaptainTj",
+    nickname: "Tj07",
     description:
       "Passionate gamer and skilled coder, blending creativity with technical prowess.",
-    categories: ["CSGO", "JavaScript", "React", "NextJs"],
+    categories: ["Gamer", "CSGO"],
   });
 
   if (createdCustomer) {
@@ -24,7 +24,6 @@ router.get("/create", async function (req, res, next) {
   }
 });
 
-
 router.get("/getAll", async function (req, res) {
   const customers = await customerModel.find();
   if (customers) {
@@ -33,8 +32,6 @@ router.get("/getAll", async function (req, res) {
     res.render("index", { msg: "Zero Customers" });
   }
 });
-
-
 
 // 1. Case-Insensitive Search in Mongoose =>
 router.get("/find1/:nickname", async function (req, res) {
@@ -54,7 +51,7 @@ router.get("/find2", async function (req, res) {
   const customers = await customerModel.find({
     // nickname: "TjBhai",
     categories: {
-      $all: ["CSGO", "JavaScript", "React", "NextJs","Valorant"],
+      $all: ["CSGO", "JavaScript", "React", "NextJs", "Valorant"],
     },
   });
   if (customers.length !== 0) {
@@ -64,9 +61,50 @@ router.get("/find2", async function (req, res) {
   }
 });
 
-// 3. Serach for documents with specifix date range in mongoose.
+// 3. Serach for documents with specific date range in mongoose.
 router.get("/find3", async function (req, res) {
+  var date1 = new Date("2024-06-19");
+  var date2 = new Date("2024-06-20");
 
+  let customers = await customerModel.find({
+    datecreated: { $gte: date1, $lte: date2 },
+  });
+
+  res.json(customers);
+});
+
+// 4. Filter Documents based on the existence of the field
+router.get("/find4", async function (req, res) {
+  let customers = await customerModel.find({
+    categories: { $exists: true },
+  });
+
+  res.json(customers);
+});
+
+// 5. Filter Document based on the on specific field's length
+router.get("/find5", async function (req, res) {
+  let customers = await customerModel.find({
+    categories: { $size: 2 },
+  });
+
+  res.json(customers);
+});
+
+// Another Solution =>
+
+// 5. Filter Document based on the on specific field's length
+router.get("/find6", async function (req, res) {
+  let customers = await customerModel.find({
+      $expr:{
+        $and:[
+          {$gte:[{$strLenCP:'$nickname'},0]},
+          {$lte:[{$strLenCP:'$nickname'},5]}
+        ]
+      }
+  });
+
+  res.json(customers);
 });
 
 module.exports = router;
