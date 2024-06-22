@@ -4,6 +4,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/backendPrepDB");
 
 const userschema = mongoose.Schema({
   username: String,
+  password :String,
   name: String,
   age: Number,
 });

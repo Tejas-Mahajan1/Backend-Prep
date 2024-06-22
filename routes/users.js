@@ -11,6 +11,7 @@ router.get('/', function(req, res, next) {
 router.get("/create/:username/:name/:age", async function (req, res) {
   const myUser = await userModel.create({
       username: `${req.params.username}`,
+      password:"user@123",
       name: `${req.params.name}`,
       age: `${req.params.age}`,
     });
