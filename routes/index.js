@@ -1,10 +1,17 @@
 var express = require("express");
 var router = express.Router();
+const userModel = require("../models/UserModel");
+
+
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("index", { msg: "Welcome !! TO THE BACKEND PREP" });
 });
+
+
+
+/* Old Routes =>
 
 // using flash connect
 router.get("/failed", function (req, res, next) {
@@ -59,5 +66,7 @@ router.get("/deleteC", function (req, res) {
   res.clearCookie("Tj");
   res.send("<h2>Cookie Removed</h2>");
 });
+
+*/
 
 module.exports = router;

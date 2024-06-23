@@ -3,6 +3,7 @@ var router = express.Router();
 const userModel = require("../models/UserModel");
 const customerModel = require("../models/customerModel");
 
+
 router.get("/", function (req, res, next) {
   res.render("index", { msg: "Customer Route" });
 });

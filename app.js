@@ -5,12 +5,14 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var session = require("express-session");
 var flash = require("connect-flash");
+let passport = require("passport");
+const Users = require("./models/UserModel");
 
 // routes
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var authRouter = require("./routes/auth");
-var customerRouter=require("./routes/customers");
+var customerRouter = require("./routes/customers");
 
 var app = express();
 
@@ -26,6 +28,12 @@ app.use(
     secret: "CaptainTj", // secret from which data is gonna get encrypted
   })
 );
+
+// Passport Auth
+app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser(Users.serializeUser());
+passport.deserializeUser(Users.deserializeUser());
 
 app.use(flash());
 
