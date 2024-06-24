@@ -8,7 +8,7 @@ const localStrategy = require("passport-local");
 passport.use(new localStrategy(userModel.authenticate()));
 
 router.get("/profile", isLoggedIn, function (req, res, next) {
-  res.render("index", { msg: "Welcome !! to the Profile Page" });
+  res.render("profile", { msg: "Welcome !! to the Profile Page" });
 });
 
 // Authentication Routes
@@ -16,6 +16,7 @@ router.get("/profile", isLoggedIn, function (req, res, next) {
 router.post("/register", async function (req, res) {
   let userData = new userModel({
     username: req.body.username,
+    password:req.body.password,
     secret: req.body.secret,
   });
 
@@ -23,7 +24,7 @@ router.post("/register", async function (req, res) {
     .register(userData, req.body.password)
     .then(function (resgisteredUser) {
       passport.authenticate("local")(req, res, function () {
-        res.redirect("/profile");
+        res.redirect("/users/profile");
       });
     });
 });
@@ -32,7 +33,7 @@ router.post("/register", async function (req, res) {
 router.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/profile",
+    successRedirect: "/users/profile",
     failureRedirect: "/",
   }),
   function (req, res) {
